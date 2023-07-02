@@ -8,7 +8,7 @@ const {
 
 const getMovies = (req, res, next) => {
   Movie.find({})
-    .then((cards) => res.status(STATUS_CODES.OK).send(cards))
+    .then((movies) => res.status(STATUS_CODES.OK).send(movies))
     .catch(next);
 };
 
@@ -41,7 +41,7 @@ const addMovie = (req, res, next) => {
     movieId,
     owner: req.user._id,
   })
-    .then((card) => res.status(STATUS_CODES.CREATED).send(card))
+    .then((movie) => res.status(STATUS_CODES.CREATED).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         return next(new BadRequestError('Переданы некорректные данные при добавлении фильма'));
@@ -51,7 +51,7 @@ const addMovie = (req, res, next) => {
 };
 
 const deleteMovie = (req, res, next) => {
-  Movie.findById(req.params.cardId)
+  Movie.findById(req.params._id)
     .orFail(new NotFoundError('Карточка с указанным _id не найдена'))
     .then((movie) => {
       if (movie.owner.toString() !== req.user._id) {
