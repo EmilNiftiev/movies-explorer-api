@@ -34,7 +34,6 @@ const createUser = (req, res, next) => {
     }))
     .then((user) => res.status(STATUS_CODES.CREATED)
       .send({
-        _id: user._id,
         name,
         email,
       }))

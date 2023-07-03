@@ -10,7 +10,7 @@ const router = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const limiter = require('./middlewares/limiter');
 
-const { PORT = 3000, MONGO_URL = 'MONGO_URL' } = process.env;
+const { PORT = 'PORT', MONGO_URL = 'MONGO_URL' } = process.env;
 const app = express();
 app.use(cors());
 
