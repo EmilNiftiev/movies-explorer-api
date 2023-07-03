@@ -12,6 +12,6 @@ const {
 
 router.get('/', getMovies);
 router.post('/', addMovieValidator, addMovie);
-router.delete('/:_id', movieIdValidator, deleteMovie);
+router.delete('/:movieId', movieIdValidator, deleteMovie);
 
 module.exports = router;
