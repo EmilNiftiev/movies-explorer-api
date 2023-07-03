@@ -11,6 +11,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const limiter = require('./middlewares/limiter');
 
 const { PORT: DEFAULT_PORT } = require('./utils/constants');
+
 const { PORT = DEFAULT_PORT, MONGO_URL = 'MONGO_URL', NODE_ENV } = process.env;
 const { dbUrl } = require('./utils/constants');
 // Если файл .env отсутствует, берем альтернативные значения из констант
