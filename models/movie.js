@@ -58,18 +58,10 @@ const movieSchema = new mongoose.Schema({
   nameRU: {
     required: [true, 'Поле "название фильма на русском языке" должно быть заполнено'],
     type: String,
-    validate: {
-      validator: (v) => validator.isURL(v),
-      message: 'Некорректный URL',
-    },
   },
   nameEN: {
     required: [true, 'Поле "название фильма на английском языке" должно быть заполнено'],
     type: String,
-    validate: {
-      validator: (v) => validator.isURL(v),
-      message: 'Некорректный URL',
-    },
   },
 }, { versionKey: false }); // Убираем отслеживание версии схемы ("__v" в объекте)
 

@@ -10,12 +10,16 @@ const router = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const limiter = require('./middlewares/limiter');
 
-const { PORT = 'PORT', MONGO_URL = 'MONGO_URL' } = process.env;
+const { PORT: DEFAULT_PORT } = require('./utils/constants');
+const { PORT = DEFAULT_PORT, MONGO_URL = 'MONGO_URL', NODE_ENV } = process.env;
+const { dbUrl } = require('./utils/constants');
+// Если файл .env отсутствует, берем альтернативные значения из констант
+
 const app = express();
 app.use(cors());
 
 mongoose
-  .connect(MONGO_URL)
+  .connect(NODE_ENV === 'production' ? MONGO_URL : dbUrl)
   .then(() => console.log('БД подключена'))
   .catch((err) => console.log('Ошбика подключения к БД', err));
 

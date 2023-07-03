@@ -10,4 +10,12 @@ const STATUS_CODES = {
 
 const regexForLinks = /^https?:\/\/(www\.)?[0-9a-zA-Z]+([.|-]{1}[0-9a-zA-Z]+)*\.[0-9a-zA-Z-]+(\/[0-9a-zA-Z\-._~:/?#[\]@!$&'()*+,;=]*#?)?$/;
 
-module.exports = { STATUS_CODES, regexForLinks };
+const PORT = 3000;
+const dbUrl = 'mongodb://127.0.0.1:27017/bitfilmsdb';
+
+module.exports = {
+  STATUS_CODES,
+  regexForLinks,
+  PORT,
+  dbUrl,
+};

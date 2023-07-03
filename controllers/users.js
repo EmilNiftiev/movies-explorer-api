@@ -32,7 +32,7 @@ const createUser = (req, res, next) => {
       password: hash,
       name,
     }))
-    .then((user) => res.status(STATUS_CODES.CREATED)
+    .then(() => res.status(STATUS_CODES.CREATED)
       .send({
         name,
         email,
