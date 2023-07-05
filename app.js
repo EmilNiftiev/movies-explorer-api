@@ -27,11 +27,11 @@ mongoose
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(limiter); // Ограничиваем число запросов в единицу времени
-
 app.use(helmet()); // Набор middleware-функций для защиты от веб-уязвимостей
 
 app.use(requestLogger); // Логгер запросов
+
+app.use(limiter); // Ограничиваем число запросов в единицу времени
 
 app.use(router); // все роуты из директории routes
 
