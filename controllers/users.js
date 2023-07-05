@@ -9,6 +9,10 @@ const {
   ConflictError,
   BadRequestError,
   NotFoundError,
+  incorrectUserDataErrorText,
+  conflictTextError,
+  userNotFoundErrorText,
+  incorrectUserDataForUpdateErrorText,
 } = require('../utils/errors/errors');
 
 const login = (req, res, next) => {
@@ -39,10 +43,10 @@ const createUser = (req, res, next) => {
       }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return next(new BadRequestError('Переданы некорректные данные при создании пользователя'));
+        return next(new BadRequestError(incorrectUserDataErrorText));
       }
       if (err.code === 11000) {
-        return next(new ConflictError('При регистрации указан email, который уже существует на сервере'));
+        return next(new ConflictError(conflictTextError));
       }
       return next(err);
     });
@@ -52,13 +56,13 @@ const updateUser = (req, res, next) => {
   const { email, name } = req.body;
 
   return User.findByIdAndUpdate(req.user._id, { email, name }, { new: true })
-    .orFail(new NotFoundError('Пользователь с указанным _id не найден')) // Если ошибка, сразу пробрасываем в блок Catch
+    .orFail(new NotFoundError(userNotFoundErrorText)) // Если ошибка, сразу попадаем в блок Catch
     .then((user) => {
       res.status(STATUS_CODES.OK).send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return next(new BadRequestError('Переданы некорректные данные при обновлении профиля'));
+        return next(new BadRequestError(incorrectUserDataForUpdateErrorText));
       }
       return next(err);
     });
@@ -67,7 +71,7 @@ const updateUser = (req, res, next) => {
 const getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(() => {
-      throw new NotFoundError('Пользователь по указанному _id не найден');
+      throw new NotFoundError(userNotFoundErrorText);
     })
     .then((user) => res.send(user))
     .catch(next);

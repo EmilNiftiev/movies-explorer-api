@@ -4,6 +4,10 @@ const {
   BadRequestError,
   NotFoundError,
   ForbiddenError,
+  incorrectMovieDataErrorText,
+  movieNotFoundErrorText,
+  insufficientRights,
+  incorrectMovieDataForDeleteErrorText,
 } = require('../utils/errors/errors');
 
 const getMovies = (req, res, next) => {
@@ -44,7 +48,7 @@ const addMovie = (req, res, next) => {
     .then((movie) => res.status(STATUS_CODES.CREATED).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return next(new BadRequestError('Переданы некорректные данные при добавлении фильма'));
+        return next(new BadRequestError(incorrectMovieDataErrorText));
       }
       return next(err);
     });
@@ -52,10 +56,10 @@ const addMovie = (req, res, next) => {
 
 const deleteMovie = (req, res, next) => {
   Movie.findById(req.params.movieId)
-    .orFail(new NotFoundError('Фильм с указанным _id не найден'))
+    .orFail(new NotFoundError(movieNotFoundErrorText))
     .then((movie) => {
       if (movie.owner.toString() !== req.user._id) {
-        throw new ForbiddenError('Попытка удалить чужую карточку с фильмом');
+        throw new ForbiddenError(insufficientRights);
       }
       Movie.findByIdAndRemove(req.params.movieId)
         .then(() => res.send({ message: 'Фильм удален' }))
@@ -63,7 +67,7 @@ const deleteMovie = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError' || err.name === 'ValidationError') {
-        return next(new BadRequestError('Переданы некорректные данные при удалении карточки с фильмом'));
+        return next(new BadRequestError(incorrectMovieDataForDeleteErrorText));
       }
       return next(err);
     });
